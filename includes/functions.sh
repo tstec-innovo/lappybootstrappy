@@ -14,7 +14,20 @@ lbs::ansible_artifact() {
   if [ ! -d ${ARTIFACTS_DIR}/ansible ]; then
     sudo su -l ${ACTIVE_USER} -c "mkdir -p ${ARTIFACTS_DIR}/ansible"
   fi
-  sudo su -l ${ACTIVE_USER} -c "git clone git://github.com/ansible/ansible.git ${ARTIFACTS_DIR}/ansible --recursive"
+
+  if [ ! -f ${ARTIFACTS_DIR}/ansible/README.md ]; then
+    bashlib::msg_stdout "Loading Ansible artifact."
+    sudo su -l ${ACTIVE_USER} -c "git clone git://github.com/ansible/ansible.git ${ARTIFACTS_DIR}/ansible --recursive"
+  else
+    echo -n "Updating Ansible artifact. "
+    sudo su -l ${ACTIVE_USER} -c  "cd ${ARTIFACTS_DIR}/ansible; git pull;"
+  fi
+}
+
+
+lbs::docker_build() {
+  sudo su -l ${ACTIVE_USER} -c "echo ${DOCKERHOST} > ${ARTIFACTS_DIR}/ansible_hosts"
+  sudo su -l ${ACTIVE_USER} -c "cd ${HOME_DIR}; /usr/local/bin/docker build -f ./Dockerfile ."
 }
 
 lbs::docker_start() {

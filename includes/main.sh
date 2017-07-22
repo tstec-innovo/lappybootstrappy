@@ -34,3 +34,4 @@ lbs::logo
 lbs::install_docker
 lbs::docker_start
 lbs::ansible_artifact
+lbs::docker_build
