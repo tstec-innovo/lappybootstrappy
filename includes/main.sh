@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # <<YAMLDOC
-# namespace: /neutron37/lappybootstrappy
-# description: "Macbook Initialization"
+# namespace: /neutron37/ansible_content
+# description: "Ansible Content Project"
 # copyright: "Neutron37"
 # authors: "neutron37@protonmail.com"
 # tags: bootstrap macbook laptop ansible docker devkit
@@ -10,6 +10,9 @@
 set -u
 set -o pipefail
 
+TARGET_USER="$1"
+ACTIVE_USER="$2"
+
 ###############
 ## Constants ##
 ###############
@@ -17,7 +20,6 @@ set -o pipefail
 readonly INCLUDES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 readonly HOME_DIR="${INCLUDES_DIR}/.."
 readonly ARTIFACTS_DIR="${INCLUDES_DIR}/../artifacts"
-readonly ACTIVE_USER=$1
 
 ##############
 ## Includes ##
