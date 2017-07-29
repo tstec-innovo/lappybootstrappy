@@ -14,6 +14,13 @@ wrapper::set_admin_user() {
   fi
 }
 
+wrapper::set_admin_password() {
+  if [ -z "${ADMIN_PASS}" ]; then
+    read -s -p "${ADMIN_USER} password: " ADMIN_PASS
+    echo
+  fi
+}
+
 # Ensure target user is set.
 wrapper::set_target_user() {
   if [ "${RUN_BY_ADMIN}" ]; then
@@ -26,16 +33,9 @@ wrapper::set_target_user() {
       TARGET_USER=$( whoami )
     fi
   fi
-  echo "Target user: ${TARGET_USER}."
+  echo "target user detected: ${TARGET_USER}"
 }
 
 wrapper::run_main() {
-  if [ "${RUN_BY_ADMIN}" ]; then
-    "${INCLUDES_DIR}/main.sh" "${TARGET_USER}" "${ACTIVE_USER}"
-  else
-    echo "A user from the admin group is required to run portions of this script."
-    echo -n "Please provide authentication for the user, ${ADMIN_USER}. "
-    su -l "${ADMIN_USER}" -c "${INCLUDES_DIR}/main.sh ${TARGET_USER} ${ACTIVE_USER}"
-  fi
+  "${INCLUDES_DIR}/main.sh" $@
 }
-

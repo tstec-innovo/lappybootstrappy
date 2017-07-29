@@ -15,6 +15,5 @@ readonly STYLE_MAGENTA=$( tput setaf 5 );
 readonly STYLE_CYAN=$( tput setaf 6 );
 readonly STYLE_WHITE=$( tput setaf 7 );
 
-readonly CMD_TIME=$( date +%Y.%m.%d_%H.%M.%S )
-
-readonly DOCKERHOST=$( /sbin/ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1 )
+readonly CMD_TIME=$( bashlib::timestamp )
+readonly DOCKERHOST=$( bashlib::lanip )

@@ -7,11 +7,12 @@
 # tags: bootstrap macbook laptop ansible docker devkit
 # YAMLDOC
 
+ADMIN_USER="$1"
+ADMIN_PASS="$2"
+TARGET_USER="$3"
+
 set -u
 set -o pipefail
-
-TARGET_USER="$1"
-ACTIVE_USER="$2"
 
 ###############
 ## Constants ##
@@ -25,14 +26,13 @@ readonly ARTIFACTS_DIR="${INCLUDES_DIR}/../artifacts"
 ## Includes ##
 ##############
 source "${INCLUDES_DIR}/bashlib.sh"
-source "${INCLUDES_DIR}/vars.sh"
 source "${INCLUDES_DIR}/functions.sh"
+source "${INCLUDES_DIR}/vars.sh"
 
 ##########
 ## Main ##
 ##########
 
-lbs::logo
 lbs::install_docker
 lbs::docker_start
 lbs::ansible_artifact

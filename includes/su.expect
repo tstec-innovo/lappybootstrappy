@@ -1,0 +1,19 @@
+#!/usr/bin/expect
+set timeout 1
+set SU_USER [lindex $argv 0];
+set SU_PASS [lindex $argv 1];
+set SU_CMD [lindex $argv 2];
+
+log_user 0
+spawn su -l ${SU_USER} -c ${SU_CMD}
+expect "Password:"
+send "${SU_PASS}\n"
+expect {
+  eof {
+    catch wait result
+    exit [lindex $result 3]
+  }
+  timeout {
+    exit 37
+  }
+}

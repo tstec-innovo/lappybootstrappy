@@ -11,8 +11,8 @@
 ######################
 ## Script arguments ##
 ######################
-TARGET_USER="$1"
-ADMIN_PASS="$2"
+ADMIN_PASS="$1"
+TARGET_USER="$2"
 ADMIN_USER="$3"
 
 set -u
@@ -28,12 +28,18 @@ readonly INCLUDES_DIR="${HOME_DIR}/includes"
 ##############
 ## Includes ##
 ##############
+source "${INCLUDES_DIR}/bashlib.sh"
+source "${INCLUDES_DIR}/functions.sh"
+source "${INCLUDES_DIR}/vars.sh"
 source "${INCLUDES_DIR}/wrapper.sh"
 
 ##########
 ## Main ##
 ##########
+lbs::logo
+
 wrapper::set_run_by_admin
 wrapper::set_admin_user
+wrapper::set_admin_password
 wrapper::set_target_user
-wrapper::run_main
+wrapper::run_main "${ADMIN_USER}" "${ADMIN_PASS}" "${TARGET_USER}"

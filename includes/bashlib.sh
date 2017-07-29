@@ -2,8 +2,24 @@
 ## LIBRARY FUNCTIONS ##
 #######################
 
+bashlib::lanip() {
+  /sbin/ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1
+}
+
 bashlib::timestamp() {
-  echo -n "${CMD_TIME}"
+  date +%Y.%m.%d_%H.%M.%S
+}
+
+bashlib::run_as_sudo() {
+  ${INCLUDES_DIR}/su.expect "${ADMIN_USER}" "${ADMIN_PASS}" "echo ${ADMIN_PASS} | sudo -S --prompt='' $@"
+}
+
+bashlib::run_as_admin() {
+  ${INCLUDES_DIR}/su.expect "${ADMIN_USER}" "${ADMIN_PASS}" "$@"
+}
+
+bashlib::run_as_target() {
+  ${INCLUDES_DIR}/su.expect "${ADMIN_USER}" "${ADMIN_PASS}" "echo ${ADMIN_PASS} | sudo -S --prompt='' su ${TARGET_USER} -lc '$@'"
 }
 
 # abrt: prints abort message and exits
