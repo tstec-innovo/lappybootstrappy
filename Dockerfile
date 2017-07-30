@@ -38,9 +38,9 @@ WORKDIR /
 RUN apk del .build-deps
 RUN rm -r /root/.cache
 
-# Copy over environment-specific, generated files.
-COPY artifacts/ansible_content /ansible_content
-
 # Create entrypoint
 COPY artifacts/dansible /dansible
 ENTRYPOINT ["dansible"]
+
+# Copy over environment-specific, generated files.
+COPY artifacts/ansible_content /ansible_content
