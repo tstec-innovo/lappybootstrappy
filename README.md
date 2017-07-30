@@ -1,4 +1,6 @@
-## Known Issues
+## Known Issues / Needed Improvements
+
+The su.expect script is hackey shite. I think expect is the right approach, but the author made it so it "just (barely) works".
 
 ANSIBLE_CONTENT_SSH_KEY will not be used to authenticate in the case where another valid key (ex. the default id_rsa) is already loaded into ssh-agent.
 
