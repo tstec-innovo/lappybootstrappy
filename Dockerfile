@@ -34,6 +34,7 @@ COPY artifacts/ansible /ansible
 RUN pip install -r /ansible/requirements.txt
 
 # Cleanup.
+WORKDIR /
 RUN apk del .build-deps
 RUN rm -r /root/.cache
 
