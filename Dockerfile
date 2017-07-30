@@ -33,14 +33,15 @@ ENV LANG C.UTF-8
 COPY artifacts/ansible /ansible
 RUN pip install -r /ansible/requirements.txt
 
+# Create entrypoint
+COPY artifacts/dansible /dansible
+RUN  ln -s /dansible
+ENTRYPOINT ["dansible"]
+
 # Cleanup.
 WORKDIR /
 RUN apk del .build-deps
 RUN rm -r /root/.cache
-
-# Create entrypoint
-COPY artifacts/dansible /dansible
-ENTRYPOINT ["dansible"]
 
 # Copy over environment-specific, generated files.
 COPY artifacts/ansible_content /ansible_content

@@ -15,7 +15,7 @@ Project is broken up into 3 components: LappyBootstrappy, Dansible, and AnsibleC
   * Start SSHd.
   * Run Dansible against localhost.
   * Stop SSHd.
-* Dansible:
+* Dansible: The name is a portmanteau of Docker & Ansible. This approach ensures portability by providing a clean build of a fixed version of Ansible is running within a stable Docker-based environment.
   * Install and run Docker.
   * Download / Update specified Ansible Content.
   * Initialize Ansible Content with admin credentials, SSH private key, and host machine's LAN IP.

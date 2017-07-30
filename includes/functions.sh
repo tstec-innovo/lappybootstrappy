@@ -75,6 +75,7 @@ lbs::docker_start() {
     echo -n "."
     sleep 1
   done
+  echo ""
 }
 
 lbs::install_docker() {
