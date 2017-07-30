@@ -15,6 +15,7 @@ RUN apk --no-cache --virtual .build-deps add build-base \
 RUN apk --no-cache add bash \
     python3 \
     openntpd \
+    openssh-client \
     tzdata
 
 # Fix-up Python
@@ -34,7 +35,7 @@ COPY artifacts/ansible /ansible
 RUN pip install -r /ansible/requirements.txt
 
 # Create entrypoint
-COPY artifacts/dansible /dansible
+COPY dansible /dansible
 RUN  ln -s /dansible
 ENTRYPOINT ["dansible"]
 

@@ -60,17 +60,17 @@ lbs::docker_build() {
 
 lbs::docker_start() {
   # Test Started
-  bashlib::run_as_target "/usr/local/bin/docker info"
+  bashlib::run_as_target "/usr/local/bin/docker info" &> /dev/null
   DOCKER_RETURN_CODE=$?
 
   if [ ! $DOCKER_RETURN_CODE -eq 0 ]; then
     # Start Docker
     echo -n "Starting Docker."
-    bashlib::run_as_sudo "open -a /Applications/Docker.app/Contents/MacOS/Docker"
+    bashlib::run_as_sudo "open -a /Applications/Docker.app/Contents/MacOS/Docker" &> /dev/null
   fi
 
   until [ $DOCKER_RETURN_CODE -eq 0 ]; do
-    bashlib::run_as_target "/usr/local/bin/docker info"
+    bashlib::run_as_target "/usr/local/bin/docker info" &> /dev/null
     DOCKER_RETURN_CODE=$?
     echo -n "."
     sleep 1
@@ -115,4 +115,20 @@ lbs::install_xcode() {
 
 lbs::run_ansible_content_init() {
   "${ARTIFACTS_DIR}/ansible_content/init.sh" $@
+}
+
+lbs::docker_run() {
+  DOCKER_IMAGE="9696dbe7fe59"
+  VAULT_PASSWORD_FILE="/ansible_content/artifacts/dansible_vault.password"
+  HOSTS_FILE="/ansible_content/dockerhost"
+  docker run -v "${ARTIFACTS_DIR}/ansible_content/artifacts:/ansible_content/artifacts" "${DOCKER_IMAGE}" dockerhost --vault-password-file="${VAULT_PASSWORD_FILE}" -i "${HOSTS_FILE}" "$@"
+}
+
+lbs::run_dansible() {
+  # Test with adhoc command "hostname"
+  lbs::docker_run "-a 'hostname'"
+}
+
+lbs::sshd_enable() {
+  bashlib::run_as_sudo "ls" 2> /dev/null
 }

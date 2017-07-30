@@ -20,6 +20,7 @@ Project is broken up into 3 components: LappyBootstrappy, Dansible, and AnsibleC
   * Download / Update specified Ansible Content.
   * Initialize Ansible Content with admin credentials, SSH private key, and host machine's LAN IP.
   * Build Dansible Docker image.
+  * Mounts ansible_content/artifacts to the container so that dockerhost's secret ansible_content/artifacts/dansible_vault.password can be used.
 * Ansible Content:
   * Update hosts with host machine's LAN IP.
   * Generate secrets file with given SSH private key and admin credentials.
