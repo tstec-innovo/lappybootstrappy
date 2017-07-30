@@ -55,7 +55,7 @@ lbs::ansible_content_artifact() {
 lbs::docker_build() {
   echo "${DOCKERHOST}" > "${ARTIFACTS_DIR}/ansible_hosts"
   cd "${HOME_DIR}"
-  /usr/local/bin/docker build -f ./Dockerfile .
+  /usr/local/bin/docker build --squash -f ./Dockerfile .
 }
 
 lbs::docker_start() {
