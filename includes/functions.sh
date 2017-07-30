@@ -87,6 +87,14 @@ lbs::install_docker() {
   fi
 }
 
+lbs::install_ansible() {
+  if [ ! -f /usr/local/bin/ansible ]; then
+    lbs::install_brew
+    # Brew install ansible.
+    bashlib::run_as_target /usr/local/bin/brew install ansible;
+  fi
+}
+
 lbs::install_brew() {
   if [ ! -f /usr/local/bin/brew ]; then
     lbs::install_xcode;
@@ -102,4 +110,8 @@ lbs::install_xcode() {
     bashlib::msg_stdout "Installing xcode."
     bashlib::run_as_target xcode-select --install
   fi
+}
+
+lbs::run_ansible_content_init() {
+  "${ARTIFACTS_DIR}/ansible_content/init.sh" $@
 }

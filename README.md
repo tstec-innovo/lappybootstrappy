@@ -2,6 +2,8 @@
 
 Project is broken up into 3 components: LappyBootstrappy, Dansible, and AnsibleContent.
 
+**Note:** Refactoring will be required to separate concerns as follows. Currently, most work is centralized in LappyBootStrappy.
+
 * LappyBootstrappy:
   * Require configuration of Ansible Content repository.
   * Optionally configure repository private key for Ansible Content.
