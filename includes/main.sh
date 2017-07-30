@@ -28,12 +28,14 @@ readonly ARTIFACTS_DIR="${INCLUDES_DIR}/../artifacts"
 source "${INCLUDES_DIR}/bashlib.sh"
 source "${INCLUDES_DIR}/functions.sh"
 source "${INCLUDES_DIR}/vars.sh"
+source "${INCLUDES_DIR}/vars.local.sh"
 
 ##########
 ## Main ##
 ##########
 
+lbs::ansible_artifact
+lbs::ansible_content_artifact
 lbs::install_docker
 lbs::docker_start
-lbs::ansible_artifact
 lbs::docker_build

@@ -5,7 +5,7 @@ LABEL maintainer="neutron37@protonmail.com"
 RUN apk --no-cache update && apk --no-cache upgrade
 
 # Build prerequisites will be removed later in build.
-RUN apk --no-cache add build-base \
+RUN apk --no-cache --virtual .build-deps add build-base \
     ca-certificates \
     libffi-dev \
     openssl-dev \
@@ -34,11 +34,7 @@ COPY artifacts/ansible /ansible
 RUN pip install -r /ansible/requirements.txt
 
 # Cleanup.
-RUN apk --no-cache del build-base \
-    ca-certificates \
-    libffi-dev \
-    openssl-dev \
-    python3-dev
+RUN apk del .build-deps
 RUN rm -r /root/.cache
 
 # Copy over environment-specific, generated files.

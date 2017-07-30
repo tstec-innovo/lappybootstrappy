@@ -17,9 +17,37 @@ lbs::ansible_artifact() {
   if [ ! -f ${ARTIFACTS_DIR}/ansible/README.md ]; then
     bashlib::msg_stdout "Loading Ansible artifact."
     git clone git://github.com/ansible/ansible.git "${ARTIFACTS_DIR}/ansible" --recursive
+    git reset --hard "${ANSIBLE_VERSION}"
   else
-    echo -n "Updating Ansible artifact. "
     cd "${ARTIFACTS_DIR}/ansible"
+    ACTIVE_ANSIBLE_VERSION=$( git describe )
+    if [ "${ACTIVE_ANSIBLE_VERSION}" != "${ANSIBLE_VERSION}" ]; then
+      echo -n "Updating Ansible artifact. "
+      git pull
+      git reset --hard "${ANSIBLE_VERSION}"
+    fi
+  fi
+}
+
+lbs::ssh_add_ansible_content() {
+  if [ ! -z "${ANSIBLE_CONTENT_SSH_KEY}" ]; then
+    KEY=$( bashlib::expand_path "${ANSIBLE_CONTENT_SSH_KEY}" )
+    ssh-add $KEY
+  fi
+}
+
+lbs::ansible_content_artifact() {
+  if [ ! -d ${ARTIFACTS_DIR}/ansible_content ]; then
+    mkdir -p ${ARTIFACTS_DIR}/ansible_content
+  fi
+  if [ ! -f ${ARTIFACTS_DIR}/ansible_content/README.md ]; then
+    bashlib::msg_stdout "Loading Ansible Content artifact."
+    lbs::ssh_add_ansible_content
+    git clone "${ANSIBLE_CONTENT_URL}" "${ARTIFACTS_DIR}/ansible_content" --recursive
+  else
+    lbs::ssh_add_ansible_content
+    cd "${ARTIFACTS_DIR}/ansible_content"
+    echo -n "Updating Ansible Content artifact. "
     git pull
   fi
 }

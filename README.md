@@ -1,3 +1,7 @@
+## Known Issues
+
+ANSIBLE_CONTENT_SSH_KEY will not be used to authenticate in the case where another valid key (ex. the default id_rsa) is already loaded into ssh-agent.
+
 ## Terminology
 
 ### Stages of configuration management.
