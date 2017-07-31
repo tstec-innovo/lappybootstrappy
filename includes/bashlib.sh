@@ -10,6 +10,11 @@ bashlib::expand_path() {
   echo "${EXPANDED}"
 }
 
+bashlib::uuid() {
+  NEW_UUID=$( LC_ALL=C tr -dc 'A-Za-z0-9' </dev/urandom | head -c 64 ; echo; )
+  echo "${NEW_UUID}"
+}
+
 bashlib::lanip() {
   /sbin/ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1
 }
