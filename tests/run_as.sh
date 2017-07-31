@@ -34,3 +34,6 @@ if [ ! "$?" -eq 0 ]; then
   echo "bashlib::run_as_sudo command failed: $SU_CMD"
 fi
 bashlib::run_as_sudo 'ls -1 /'
+bashlib::run_as_target whoami
+bashlib::run_as_admin whoami
+bashlib::run_as_sudo whoami

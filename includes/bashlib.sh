@@ -27,11 +27,19 @@ bashlib::run_as_sudo() {
 }
 
 bashlib::run_as_admin() {
-  ${INCLUDES_DIR}/su.expect "${ADMIN_USER}" "${ADMIN_PASS}" "$@"
+  SU_CMD="$@"
+  RESULT=$( ${INCLUDES_DIR}/su.expect "${ADMIN_USER}" "${ADMIN_PASS}" "$SU_CMD" )
+  RETURN_CODE="$?"
+  echo "${RESULT}"
+  return "${RETURN_CODE}"
 }
 
 bashlib::run_as_target() {
-  ${INCLUDES_DIR}/su.expect "${ADMIN_USER}" "${ADMIN_PASS}" "echo ${ADMIN_PASS} | sudo -S --prompt='' su ${TARGET_USER} -lc '$@'"
+  SU_CMD="echo ${ADMIN_PASS} | sudo -S --prompt='' su ${TARGET_USER} -lc '$@'"
+  RESULT=$( ${INCLUDES_DIR}/su.expect "${ADMIN_USER}" "${ADMIN_PASS}" "$SU_CMD" )
+  RETURN_CODE="$?"
+  echo "${RESULT}"
+  return "${RETURN_CODE}"
 }
 
 # abrt: prints abort message and exits
