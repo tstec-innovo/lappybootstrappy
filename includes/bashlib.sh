@@ -19,7 +19,11 @@ bashlib::timestamp() {
 }
 
 bashlib::run_as_sudo() {
-  ${INCLUDES_DIR}/su.expect "${ADMIN_USER}" "${ADMIN_PASS}" "echo ${ADMIN_PASS} | sudo -S --prompt='' $@"
+  SU_CMD="echo ${ADMIN_PASS} | sudo -S --prompt='' $@"
+  RESULT=$( ${INCLUDES_DIR}/su.expect "${ADMIN_USER}" "${ADMIN_PASS}" "$SU_CMD" )
+  RETURN_CODE="$?"
+  echo "${RESULT}"
+  return "${RETURN_CODE}"
 }
 
 bashlib::run_as_admin() {

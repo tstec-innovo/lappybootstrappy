@@ -8,7 +8,11 @@ log_user 0
 spawn su -l ${SU_USER} -c ${SU_CMD}
 expect "Password:"
 send "${SU_PASS}\n"
-log_user 1
+expect {
+  -re "\n(\.*)\r" {
+    puts "$expect_out(1,string)\n"
+  }
+}
 expect {
   eof {
     catch wait result
