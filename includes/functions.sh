@@ -6,7 +6,7 @@ lbs::logo() {
   ┃  BOOTSTRAPPY ┃
   ┗━━━━━━━━━━━━━━┛
 EOF
-  echo "   ©`date +%Y` Neutron37"
+  echo "   ©$( date +%Y ) Neutron37"
   echo "${STYLE_NORMAL}"
 }
 
@@ -130,5 +130,16 @@ lbs::run_dansible() {
 }
 
 lbs::sshd_enable() {
-  bashlib::run_as_sudo "ls" 2> /dev/null
+  SSH_STATUS=$( bashlib::run_as_sudo "/usr/sbin/systemsetup -getremotelogin")
+  echo $SSH_STATUS | grep "Remote Login: Off" > /dev/null
+  if [ "$?" -eq 0 ]; then
+    echo "Starting SSHd"
+    RESULT=$( bashlib::run_as_sudo "/usr/sbin/systemsetup -setremotelogin on" )
+  fi
+}
+
+lbs::sshd_disable() {
+  # SSH always disabled afterwards as a precaution.
+  echo "Stopping SSHd"
+  RESULT=$( bashlib::run_as_sudo "/usr/sbin/systemsetup -f -setremotelogin off" )
 }

@@ -27,7 +27,7 @@ Project is broken up into 3 components: LappyBootstrappy, Dansible, and AnsibleC
 
 ## Known Issues / Needed Improvements
 
-The su.expect script is hackey shite. I think expect is the right approach, but the author made it so it "just (barely) works".
+The su.expect script is some hackey shite. I think the 'expect' command is the right approach, but I've hacked on the script until it just (barely) works. For example, run_as_sudo requires that full paths to binaries are passed, seems like environment isn't initializing for some reason... Anyhow, moving on.
 
 ANSIBLE_CONTENT_SSH_KEY will not be used to authenticate in the case where another valid key (ex. the default id_rsa) is already loaded into ssh-agent.
 

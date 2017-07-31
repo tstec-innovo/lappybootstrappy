@@ -1,24 +1,24 @@
 #!/usr/bin/expect
-set timeout 3
+set timeout 10
 set SU_USER [lindex $argv 0];
 set SU_PASS [lindex $argv 1];
 set SU_CMD [lindex $argv 2];
 
+exp_internal 0
 log_user 0
 spawn su -l ${SU_USER} -c ${SU_CMD}
 expect "Password:"
 send "${SU_PASS}\n"
 expect {
-  -re "\n(\.*)\r" {
-    puts "$expect_out(1,string)\n"
-  }
-}
-expect {
   eof {
     catch wait result
     exit [lindex $result 3]
   }
+  -re "\n(\.*)\n" {
+    puts "$expect_out(1,string)\n"
+  }
   timeout {
+    puts "su.expect timed out waiting for eof.\n"
     exit 37
   }
 }

@@ -4,7 +4,7 @@
 # description: "Ansible Content Project"
 # copyright: "Neutron37"
 # authors: "neutron37@protonmail.com"
-# tags: bootstrap macbook laptop ansible docker devkit
+# tags: bootstrap macbook laptop ansible docker
 # YAMLDOC
 
 ADMIN_USER="$1"
@@ -42,5 +42,7 @@ source "${INCLUDES_DIR}/vars.local.sh"
 #lbs::run_ansible_content_init "${ADMIN_USER}" "${ADMIN_PASS}" "${TARGET_USER}"
 #lbs::docker_build
 lbs::sshd_enable
+sleep 20
+echo "=================================="
 #lbs::run_dansible
-#lbs::sshd_disable
+lbs::sshd_disable
