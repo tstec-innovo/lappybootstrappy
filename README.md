@@ -1,5 +1,7 @@
 ## LappyBootstrappy overview.
 
+I'd like this script to support MacOS, Linux, and BSD one day. For now it's only tested for MacOS Sierra.
+
 Project is broken up into 3 components: LappyBootstrappy, Dansible, and AnsibleContent.
 
 **Note:** Refactoring will be required to separate concerns as follows. Currently, most work is centralized in LappyBootStrappy.
@@ -27,7 +29,19 @@ Project is broken up into 3 components: LappyBootstrappy, Dansible, and AnsibleC
 
 ## Known Issues / Needed Improvements
 
-The su.expect script is some hackey shite. I think the 'expect' command is the right approach, but I've hacked on the script until it just (barely) works. For example, run_as_sudo requires that full paths to binaries are passed, seems like environment isn't initializing for some reason... Anyhow, moving on.
+* Admin pass includes a newline character by default.
+
+* The latest image isn't being automatically used. This needs to be fixed ASAP.
+
+* SSH known_hosts is not included on the Docker instance. For now, host_key_checking=False has been set in ansible config.
+
+**WARNING:** If you're using dseditgroup to manage sshd access. This script will clobber your config. Having this script be the only thing to manage sshd access is actually what I want for the command-and-control, laptop0.
+**WARNING:** If you're running sshd on localhost this script will turn it off at the end. Again this is desirable for the use-case specified above.
+
+The su.expect script and wrapper "run_as" functions areound it are some hackey shite. I do think an 'expect' command is the right approach to enable only requiring the admin password to be entered once. It's available on the base-install of OSX and at-worst an easily available supported package on any linux/bsd distro. Still I've hacked on the script repeatedly until it just works. Some examples which may point to possible issues:
+
+* run_as_sudo requires that full paths to binaries are passed, seems like environment isn't initializing for some reason.
+* IO redirection and pipes don't work, which is to be expected from expect.
 
 ANSIBLE_CONTENT_SSH_KEY will not be used to authenticate in the case where another valid key (ex. the default id_rsa) is already loaded into ssh-agent.
 

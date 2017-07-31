@@ -118,10 +118,11 @@ lbs::run_ansible_content_init() {
 }
 
 lbs::docker_run() {
-  DOCKER_IMAGE="9696dbe7fe59"
+  DOCKER_IMAGE="4d81e5976efe"
   VAULT_PASSWORD_FILE="/ansible_content/artifacts/dansible_vault.password"
   HOSTS_FILE="/ansible_content/dockerhost"
-  docker run -v "${ARTIFACTS_DIR}/ansible_content/artifacts:/ansible_content/artifacts" "${DOCKER_IMAGE}" dockerhost --vault-password-file="${VAULT_PASSWORD_FILE}" -i "${HOSTS_FILE}" "$@"
+  docker run -v "${ARTIFACTS_DIR}/ansible_content/artifacts:/ansible_content/artifacts" "${DOCKER_IMAGE}" dockerhost --user="${ADMIN_USER}" --become --vault-password-file="${VAULT_PASSWORD_FILE}" --extra-vars "ansible_become_pass=${ADMIN_PASS}" -i "${HOSTS_FILE}" "$@"
+  #docker run --add-host dockerhost:"${DOCKERHOST}" -v "${ARTIFACTS_DIR}/ansible_content/artifacts:/ansible_content/artifacts" "${DOCKER_IMAGE}" dockerhost --user="${ADMIN_USER}" --become --vault-password-file="${VAULT_PASSWORD_FILE}" -i "${HOSTS_FILE}" "$@"
 }
 
 lbs::run_dansible() {
@@ -129,17 +130,55 @@ lbs::run_dansible() {
   lbs::docker_run "-a 'hostname'"
 }
 
+lbs::sshd_config() {
+  echo "Running dseditgroup -o create com.apple.access_ssh."
+  RESULT=$( bashlib::run_as_sudo "dseditgroup -o create com.apple.access_ssh" )
+  echo "Adding user ${ADMIN_USER} to com.apple.access_ssh."
+  RESULT=$( bashlib::run_as_sudo "dseditgroup -o edit -a ${ADMIN_USER} -t user com.apple.access_ssh" )
+}
+
+lbs::ensure_file_admin_authorized_keys() {
+  RESULT=$( bashlib::run_as_admin "mkdir ~/.ssh" 2> /dev/null )
+  RESULT=$( bashlib::run_as_admin "touch ~/.ssh/authorized_keys" )
+  RESULT=$( bashlib::run_as_admin "chmod 500 ~/.ssh/authorized_keys" )
+}
+
+lbs::set_admin_authorized_keys() {
+  lbs::ensure_file_admin_authorized_keys
+  ADMIN_PUBKEY_FILE="${ARTIFACTS_DIR}/ansible_content/artifacts/ssh/dansible_rsa_4096.key.pub"
+  ADMIN_PUBKEY=$( cat "${ADMIN_PUBKEY_FILE}" )
+  RESULT=$( bashlib::run_as_admin "grep '${ADMIN_PUBKEY}' ~/.ssh/authorized_keys" )
+  if [ ! "$?" -eq 0 ]; then
+
+    ## Stupid effing expect. Couln't get anything like this to work.
+    # RESULT=$( bashlib::run_as_admin "cat ${ADMIN_PUBKEY_FILE} >> ~/.ssh/authorized_keys" )
+    # RESULT=$( bashlib::run_as_admin "bash -c 'cat ${ADMIN_PUBKEY_FILE} >> ~/.ssh/authorized_keys'" )
+
+    ## Working around expect limitations with file copies.
+    echo "Setting pubkey for ${ADMIN_USER}."
+    RESULT=$( bashlib::run_as_admin "cp ~/.ssh/authorized_keys ~/.ssh/authorized_keys.${CMD_TIME}.backup" )
+    RESULT=$( bashlib::run_as_admin "cp ~/.ssh/authorized_keys /tmp/ak_tmp" )
+    RESULT=$( bashlib::run_as_sudo "chmod a+rw /tmp/ak_tmp" )
+    echo "${ADMIN_PUBKEY}" >> /tmp/ak_tmp
+    RESULT=$( bashlib::run_as_sudo "chmod a-rwx,u+rw /tmp/ak_tmp" )
+    RESULT=$( bashlib::run_as_admin "mv -f /tmp/ak_tmp ~/.ssh/authorized_keys" )
+  fi
+}
+
+
 lbs::sshd_enable() {
   SSH_STATUS=$( bashlib::run_as_sudo "/usr/sbin/systemsetup -getremotelogin")
   echo $SSH_STATUS | grep "Remote Login: Off" > /dev/null
   if [ "$?" -eq 0 ]; then
-    echo "Starting SSHd"
+    echo "Starting sshd."
     RESULT=$( bashlib::run_as_sudo "/usr/sbin/systemsetup -setremotelogin on" )
   fi
 }
 
 lbs::sshd_disable() {
   # SSH always disabled afterwards as a precaution.
-  echo "Stopping SSHd"
+  echo "Stopping sshd."
+  echo "NOTICE: As the final step running this script sshd has been disabled as a precaution."
+  echo "NOTICE: If you wish leave sshd running you'll need to re-enable it manually."
   RESULT=$( bashlib::run_as_sudo "/usr/sbin/systemsetup -f -setremotelogin off" )
 }

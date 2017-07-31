@@ -34,15 +34,15 @@ source "${INCLUDES_DIR}/vars.local.sh"
 ## Main ##
 ##########
 
-#lbs::ansible_artifact
-#lbs::ansible_content_artifact
-#lbs::install_ansible
-#lbs::install_docker
-#lbs::docker_start
-#lbs::run_ansible_content_init "${ADMIN_USER}" "${ADMIN_PASS}" "${TARGET_USER}"
-#lbs::docker_build
+lbs::ansible_artifact
+lbs::ansible_content_artifact
+lbs::install_ansible
+lbs::install_docker
+lbs::docker_start
+lbs::run_ansible_content_init "${ADMIN_USER}" "${ADMIN_PASS}" "${TARGET_USER}"
+lbs::docker_build
+lbs::sshd_config
+lbs::set_admin_authorized_keys
 lbs::sshd_enable
-sleep 20
-echo "=================================="
-#lbs::run_dansible
+lbs::run_dansible
 lbs::sshd_disable
