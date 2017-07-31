@@ -18,7 +18,7 @@ expect {
     puts "$expect_out(1,string)\n"
   }
   timeout {
-    puts "su.expect timed out waiting for eof.\n"
+    puts "su.expect timed out.\n"
     exit 37
   }
 }
