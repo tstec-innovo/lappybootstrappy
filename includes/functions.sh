@@ -7,6 +7,18 @@ lbs::logo() {
   ┗━━━━━━━━━━━━━━┛
 EOF
   echo "   ©$( date +%Y ) Neutron37"
+  echo "${STYLE_RED}"
+
+  cat <<"EOF"
+  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+  ┃ WARNING:                                                                 ┃
+  ┃ This script makes the assumption that SSH access to your laptop is used  ┃
+  ┃ exclusivley for its own self-provisioning process. This script enables & ┃
+  ┃ disables SSHd as needed. It also uses dseditgroup to manage sshd access, ┃
+  ┃ so if you're also using dseditgroup for that purpose this script will    ┃
+  ┃ very likely clobber your config.                                         ┃
+  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+EOF
   echo "${STYLE_NORMAL}"
 }
 
@@ -55,7 +67,7 @@ lbs::ansible_content_artifact() {
 lbs::docker_build() {
   echo "${DOCKERHOST}" > "${ARTIFACTS_DIR}/ansible_hosts"
   cd "${HOME_DIR}"
-  /usr/local/bin/docker build --squash -f ./Dockerfile .
+  /usr/local/bin/docker build --iidfile="${ARTIFACTS_DIR}/dansible.iid" --squash -f ./Dockerfile .
 }
 
 lbs::docker_start() {
@@ -118,11 +130,12 @@ lbs::run_ansible_content_init() {
 }
 
 lbs::docker_run() {
-  DOCKER_IMAGE="4d81e5976efe"
   VAULT_PASSWORD_FILE="/ansible_content/artifacts/dansible_vault.password"
   HOSTS_FILE="/ansible_content/dockerhost"
-  docker run -v "${ARTIFACTS_DIR}/ansible_content/artifacts:/ansible_content/artifacts" "${DOCKER_IMAGE}" dockerhost --user="${ADMIN_USER}" --become --vault-password-file="${VAULT_PASSWORD_FILE}" --extra-vars "ansible_become_pass=${ADMIN_PASS}" -i "${HOSTS_FILE}" "$@"
-  #docker run --add-host dockerhost:"${DOCKERHOST}" -v "${ARTIFACTS_DIR}/ansible_content/artifacts:/ansible_content/artifacts" "${DOCKER_IMAGE}" dockerhost --user="${ADMIN_USER}" --become --vault-password-file="${VAULT_PASSWORD_FILE}" -i "${HOSTS_FILE}" "$@"
+  DOCKER_IID=$( cat "${ARTIFACTS_DIR}/dansible.iid" )
+  echo "Running docker image with IID: ${DOCKER_IID}"
+  docker run -v "${ARTIFACTS_DIR}/ansible_content/artifacts:/ansible_content/artifacts" "${DOCKER_IID}" dockerhost --user="${ADMIN_USER}" --become --vault-password-file="${VAULT_PASSWORD_FILE}" --extra-vars "ansible_become_pass=${ADMIN_PASS}" -i "${HOSTS_FILE}" "$@"
+  #docker run --add-host dockerhost:"${DOCKERHOST}" -v "${ARTIFACTS_DIR}/ansible_content/artifacts:/ansible_content/artifacts" "${DOCKER_IID}" dockerhost --user="${ADMIN_USER}" --become --vault-password-file="${VAULT_PASSWORD_FILE}" -i "${HOSTS_FILE}" "$@"
 }
 
 lbs::run_dansible() {
@@ -177,8 +190,12 @@ lbs::sshd_enable() {
 
 lbs::sshd_disable() {
   # SSH always disabled afterwards as a precaution.
+  echo
+  echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+  echo '!! After running, this script disables local SSH as a precaution . !!'
+  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+  echo
   echo "Stopping sshd."
-  echo "NOTICE: As the final step running this script sshd has been disabled as a precaution."
-  echo "NOTICE: If you wish leave sshd running you'll need to re-enable it manually."
   RESULT=$( bashlib::run_as_sudo "/usr/sbin/systemsetup -f -setremotelogin off" )
+  echo "${RESULT}"
 }
