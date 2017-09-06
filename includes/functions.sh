@@ -190,12 +190,6 @@ lbs::sshd_enable() {
 
 lbs::sshd_disable() {
   # SSH always disabled afterwards as a precaution.
-  echo
-  echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-  echo '!! After running, this script disables local SSH as a precaution . !!'
-  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-  echo
   echo "Stopping sshd."
   RESULT=$( bashlib::run_as_sudo "/usr/sbin/systemsetup -f -setremotelogin off" )
-  echo "${RESULT}"
 }
