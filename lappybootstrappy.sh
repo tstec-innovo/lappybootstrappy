@@ -7,7 +7,6 @@
 # tags: bootstrap macbook laptop ansible docker devkit
 # YAMLDOC
 
-
 ######################
 ## Script arguments ##
 ######################
@@ -24,14 +23,16 @@ set -o pipefail
 readonly ACTIVE_USER=$( whoami )
 readonly HOME_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 readonly INCLUDES_DIR="${HOME_DIR}/includes"
+readonly ARTIFACTS_DIR="${HOME_DIR}/artifacts"
 
 ##############
 ## Includes ##
 ##############
 source "${INCLUDES_DIR}/bashlib.sh"
-source "${INCLUDES_DIR}/functions.sh"
 source "${INCLUDES_DIR}/vars.sh"
+source "${INCLUDES_DIR}/vars.local.sh"
 source "${INCLUDES_DIR}/wrapper.sh"
+source "${INCLUDES_DIR}/functions.sh"
 
 ##########
 ## Main ##
@@ -43,5 +44,26 @@ wrapper::set_run_by_admin
 wrapper::set_admin_user
 wrapper::set_admin_password
 wrapper::set_target_user
-# Run main.
-wrapper::run_main "${ADMIN_USER}" "${ADMIN_PASS}" "${TARGET_USER}"
+
+# Generate SSH keys.
+lbs::artifact_gen_ssh
+
+# Enable host machine SSH access with SSH public key.
+lbs::set_admin_authorized_keys
+
+# Download / Update Dansible.
+lbs::dansible_artifact
+
+# Initialize Dansible with SSH keys, admin credentials, and specified Ansible Content repo.
+
+# Configue SSHd
+lbs::sshd_config
+
+# Start SSHd.
+lbs::sshd_enable
+
+# Run Dansible against localhost.
+# lbs::run_dansible
+
+# Stop SSHd.
+lbs::sshd_disable
