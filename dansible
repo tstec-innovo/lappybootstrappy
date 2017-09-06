@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-set -e
-source /ansible/hacking/env-setup -q
-cd /ansible_content
-ansible "$@"
