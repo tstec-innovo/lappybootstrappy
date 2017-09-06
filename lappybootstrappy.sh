@@ -38,8 +38,10 @@ source "${INCLUDES_DIR}/wrapper.sh"
 ##########
 lbs::logo
 
+# Gather user info including admin authentication credentials.
 wrapper::set_run_by_admin
 wrapper::set_admin_user
 wrapper::set_admin_password
 wrapper::set_target_user
+# Run main.
 wrapper::run_main "${ADMIN_USER}" "${ADMIN_PASS}" "${TARGET_USER}"

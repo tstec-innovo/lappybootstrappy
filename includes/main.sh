@@ -34,15 +34,25 @@ source "${INCLUDES_DIR}/vars.local.sh"
 ## Main ##
 ##########
 
-lbs::ansible_artifact
-lbs::ansible_content_artifact
-lbs::install_ansible
-lbs::install_docker
-lbs::docker_start
-lbs::run_ansible_content_init "${ADMIN_USER}" "${ADMIN_PASS}" "${TARGET_USER}"
-lbs::docker_build
-lbs::sshd_config
+# Generate SSH keys.
+lbs::artifact_gen_ssh
+
+# Enable host machine SSH access with SSH public key.
 lbs::set_admin_authorized_keys
+
+# Download / Update Dansible.
+lbs::dansible_artifact
+
+# Initialize Dansible with SSH keys, admin credentials, and specified Ansible Content repo.
+
+# Configue SSHd
+lbs::sshd_config
+
+# Start SSHd.
 lbs::sshd_enable
-lbs::run_dansible
+
+# Run Dansible against localhost.
+# lbs::run_dansible
+
+# Stop SSHd.
 lbs::sshd_disable

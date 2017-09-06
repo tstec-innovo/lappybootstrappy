@@ -7,17 +7,20 @@ Project is broken up into 3 components: LappyBootstrappy, Dansible, and AnsibleC
 **Note:** Refactoring will be required to separate concerns as follows. Currently, most work is centralized in LappyBootStrappy.
 
 * LappyBootstrappy:
+  * Wrapper:
+    * Gather user info including admin authentication credentials.
+    * Run main.
+  * Main
+    * Generate SSH keys.
+    * Enable host machine SSH access with SSH public key.
+    * Download / Update Dansible.
+    * Initialize Dansible with SSH keys, admin credentials, and specified Ansible Content repo.
+    * Start SSHd.
+    * Run Dansible against localhost.
+    * Stop SSHd.
+* Dansible: The name is a portmanteau of Docker & Ansible. This approach ensures portability by providing a clean build of a fixed version of Ansible is running within a stable Docker-based environment.
   * Require configuration of Ansible Content repository.
   * Optionally configure repository private key for Ansible Content.
-  * Gather user info including admin authentication credentials
-  * Generate SSH keys.
-  * Enable host machine SSH access with SSH public key.
-  * Download / Update Dansible.
-  * Initialize Dansible with SSH keys, admin credentials, and specified Ansible Content repo.
-  * Start SSHd.
-  * Run Dansible against localhost.
-  * Stop SSHd.
-* Dansible: The name is a portmanteau of Docker & Ansible. This approach ensures portability by providing a clean build of a fixed version of Ansible is running within a stable Docker-based environment.
   * Install and run Docker.
   * Download / Update specified Ansible Content.
   * Initialize Ansible Content with admin credentials, SSH private key, and host machine's LAN IP.
