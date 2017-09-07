@@ -30,9 +30,10 @@ readonly ARTIFACTS_DIR="${HOME_DIR}/artifacts"
 ##############
 source "${INCLUDES_DIR}/bashlib.sh"
 source "${INCLUDES_DIR}/vars.sh"
-source "${INCLUDES_DIR}/vars.local.sh"
+source "${HOME_DIR}/vars.local.sh"
+
 source "${INCLUDES_DIR}/wrapper.sh"
-source "${INCLUDES_DIR}/functions.sh"
+source "${INCLUDES_DIR}/lbs.sh"
 
 ##########
 ## Main ##

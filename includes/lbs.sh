@@ -41,23 +41,24 @@ lbs::dansible_artifact() {
   if [ ! -f ${ARTIFACTS_DIR}/dansible/README.md ]; then
     bashlib::msg_stdout "Loading D A N S I B L E artifact."
     lbs::ssh_add_dansible_content_key
-    git clone "${ANSIBLE_CONTENT_URL}" "${ARTIFACTS_DIR}/dansible" --recursive
+    git clone "${DANSIBLE_URL}" "${ARTIFACTS_DIR}/dansible" --recursive
   else
     lbs::ssh_add_dansible_content_key
-    cd "${ARTIFACTS_DIR}/ansible_content"
-    echo -n "Updating Ansible Content artifact. "
+    cd "${ARTIFACTS_DIR}/dansible"
+    echo -n "Updating D A N S I B L E artifact. "
     git pull
   fi
 }
 
 lbs::artifact_gen_ssh() {
+  if [ ! -d "${ARTIFACTS_DIR}/ssh" ]; then
+    mkdir -p "${ARTIFACTS_DIR}/ssh"
+  fi
   if [ ! -f "${ARTIFACTS_DIR}/ssh/dansible_rsa_4096.key" ]; then
-    if [ ! -d "${ARTIFACTS_DIR}/ssh" ]; then
-      mkdir -p "${ARTIFACTS_DIR}/ssh"
-    fi
     echo "Generating ${ARTIFACTS_DIR}/ssh/dansible_rsa_4096.key."
     ssh-keygen -t rsa -b 4096 -N "" -f "${ARTIFACTS_DIR}/ssh/dansible_rsa_4096.key"
-    chmod 500 "${ARTIFACTS_DIR}/ssh/*"
+    chmod 500 "${ARTIFACTS_DIR}/ssh/dansible_rsa_4096.key"
+    chmod 500 "${ARTIFACTS_DIR}/ssh/dansible_rsa_4096.key.pub"
   fi
 }
 
@@ -68,8 +69,8 @@ lbs::ensure_file_admin_authorized_keys() {
 }
 
 lbs::set_admin_authorized_keys() {
-  dansible::ensure_file_admin_authorized_keys
-  ADMIN_PUBKEY_FILE="${ARTIFACTS_DIR}/ansible_content/artifacts/ssh/dansible_rsa_4096.key.pub"
+  lbs::ensure_file_admin_authorized_keys
+  ADMIN_PUBKEY_FILE="${ARTIFACTS_DIR}/ssh/dansible_rsa_4096.key.pub"
   ADMIN_PUBKEY=$( cat "${ADMIN_PUBKEY_FILE}" )
   RESULT=$( bashlib::run_as_admin "grep '${ADMIN_PUBKEY}' ~/.ssh/authorized_keys" )
   if [ ! "$?" -eq 0 ]; then
