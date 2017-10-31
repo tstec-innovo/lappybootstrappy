@@ -1,5 +1,3 @@
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-
 ## LappyBootstrappy overview.
 
 I'd like this script to support MacOS, Linux, and BSD one day. For now it's only tested for MacOS Sierra.
