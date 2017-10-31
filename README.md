@@ -1,3 +1,5 @@
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+
 ## LappyBootstrappy overview.
 
 I'd like this script to support MacOS, Linux, and BSD one day. For now it's only tested for MacOS Sierra.
