@@ -1,4 +1,4 @@
-## LappyBootstrappy overview.
+## LappyBootstrappy - Work In Progress
 
 I'd like this script to support MacOS, Linux, and BSD one day. For now it's only tested for MacOS.
 
