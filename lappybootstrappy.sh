@@ -22,11 +22,11 @@ while [ -h "${BASHLIB_SOURCE}" ]; do
 done
 BASHLIB_THIS_DIR=$( dirname ${BASHLIB_SOURCE} )
 export BASHLIB_THIS_DIR=$( cd -P $BASHLIB_THIS_DIR && pwd )
-export BASHLIB_DIR="${BASHLIB_THIS_DIR}/bashlib"
+export BASHLIB_DIR="${BASHLIB_THIS_DIR}/src/bashlib"
 if [ ! -d "${BASHLIB_DIR}" ]; then
   echo "------------------------------------------------------------"
   echo "Installing neutron37 bashlib."
-  cd "${BASHLIB_THIS_DIR}"
+  cd "${BASHLIB_THIS_DIR}/src"
   git clone https://github.com/neutron37/bashlib.git
   echo "------------------------------------------------------------"
 fi
