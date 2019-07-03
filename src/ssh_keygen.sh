@@ -21,8 +21,10 @@ source "${BASHLIB_DIR}/bashlib.sh"
 ##################################################################
 
 # Make brew available if it's not installed already.
-bashlib::check_admin
-bashlib::msg_stdout  "Installing homebrew"
-bashlib::print_cmd   '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
-                      /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+bashlib::print_cmd   '[ -d $HOME/.ssh ] || mkdir -p "${HOME}/.ssh"'
+                      [ -d $HOME/.ssh ] || mkdir -p "${HOME}/.ssh"
+bashlib::print_cmd   '[ -f $HOME/.ssh/id_rsa ] || ssh-keygen -b4096 -f"${HOME}/.ssh/id_rsa"'
+                      [ -f $HOME/.ssh/id_rsa ] || ssh-keygen -b4096 -f"${HOME}/.ssh/id_rsa"
+bashlib::print_cmd   'cat "${HOME}/.ssh/id_rsa.pub"'
+                      cat "${HOME}/.ssh/id_rsa.pub"
 bashlib::msg_stdout  "------------------------------------------------------------"

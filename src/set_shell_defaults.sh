@@ -20,7 +20,6 @@ source "${BASHLIB_DIR}/bashlib.sh"
 # END bashlib include boilerplate.                               #
 ##################################################################
 
-bashlib::msg_stdout  "------------------------------------------------------------"
 bashlib::msg_stdout  "Ensure base shell directories are available."
 
 bashlib::print_cmd   '[ -d ~/.local/share ] || mkdir -p ~/.local/share'
@@ -38,11 +37,13 @@ bashlib::print_cmd   '[ -f ~/.profile ] || touch ~/.profile'
 bashlib::print_cmd   '[ -f ~/.config/fish/config.fish ] || touch ~/.config/fish/config.fish'
                       [ -f ~/.config/fish/config.fish ] || touch ~/.config/fish/config.fish
 
-bashlib::msg_stdout  "Ensure \$PATH is set appropriately for zsh, bash, and fish."
-
 # Zsh: Ensure path and plugins set
-bashlib::print_cmd   '[ -f ~/.zshrc ] || cp "${BASHLIB_THIS_DIR}/dotfile.zshrc" "${HOME}/.zshrc"'
-                      [ -f ~/.zshrc ] || cp "${BASHLIB_THIS_DIR}/dotfile.zshrc" "${HOME}/.zshrc"
+bashlib::msg_stdout  "Set .zshrc to lappybootstrappy included default."
+bashlib::print_cmd   '[ -f ~/.zshrc ] || cp "${BASHLIB_PROJECT_DIR}/dotfile.zshrc" "${HOME}/.zshrc"'
+                      [ -f ~/.zshrc ] || cp "${BASHLIB_PROJECT_DIR}/dotfile.zshrc" "${HOME}/.zshrc"
+
+
+bashlib::msg_stdout  "Ensure \$PATH is set appropriately for bash, and fish."
 
 # Fish: Ensure path is included
 CONFIG_FILE="${HOME}/.config/fish/config.fish"

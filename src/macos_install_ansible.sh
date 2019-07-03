@@ -22,7 +22,6 @@ source "${BASHLIB_DIR}/bashlib.sh"
 
 # Make brew available if it's not installed already.
 bashlib::check_admin
-bashlib::msg_stdout  "------------------------------------------------------------"
 bashlib::msg_stdout  echo "Installing ansible"
 bashlib::print_cmd   'brew install ansible'
                       brew install ansible
