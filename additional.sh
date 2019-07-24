@@ -1,8 +1,10 @@
 # MacOS configuration
 defaults write com.apple.dock static-only -bool TRUE; killall Dock
 
-# iterm2
+# iterm2 + shell integration
 brew cask install iterm2
+curl -L https://iterm2.com/shell_integration/zsh \
+  -o ~/.iterm2_shell_integration.zsh
 
 # atom
 brew cask install atom
@@ -47,11 +49,43 @@ mas install 904280696
 # Install Marked 2
 mas install 890031187
 
+# Install keybase
+brew cask install keybase
+open /Applications/Keybase.app
 
+# Sync Desktop
+cd /tmp
+git clone keybase://private/neutron37/Desktop
+mv Desktop/.git ~/Desktop
+rsync -av Desktop/ ~/Desktop
+rm -rf /tmp/Desktop
+
+# Sync Documents
+git clone keybase://private/neutron37/Documents
+mv Documents/.git ~/Documents
+rsync -av Documents/ ~/Documents
+rm -rf /tmp/Documents
+
+# Sync home
+git clone keybase://private/neutron37/home
+mv home/.git $HOME/
+rsync home/ $HOME
+rm -rf /tmp/home
+
+# Install useful commands
 brew install wget ripgrep loc
+
+# Install PHP stuff
 brew install php@7.1 composer
+
+# Install etcher
 brew cask install balenaetcher
 
+# Install signal
 brew cask install signal
+
+# Install localtunnel
 npm install -g localtunnel
+
+# Install OhMyZsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
