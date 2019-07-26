@@ -1,6 +1,3 @@
-# MacOS configuration
-defaults write com.apple.dock static-only -bool TRUE; killall Dock
-
 # iterm2 + shell integration
 brew cask install iterm2
 curl -L https://iterm2.com/shell_integration/zsh \
@@ -13,11 +10,6 @@ open /Applications/Atom.app
 # VSCode
 brew cask install visual-studio-code
 open /Applications/Visual\ Studio\ Code.app
-
-# Alfred
-brew cask install alfred
-atom ~/Documents/licenses/alfred.license
-open /Applications/Alfred\ 4.app
 
 # ShiftIt
 brew cask install shiftit
@@ -71,6 +63,12 @@ git clone keybase://private/neutron37/home
 mv home/.git $HOME/
 rsync home/ $HOME
 rm -rf /tmp/home
+
+# Alfred
+brew cask install alfred
+atom ~/Documents/licenses/alfred.license
+open /Applications/Alfred\ 4.app
+open https://github.com/stuartcryan/custom-iterm-applescripts-for-alfred/blob/master/custom_iterm_script_iterm_3.1.1.applescript
 
 # Install useful commands
 brew install wget ripgrep loc
