@@ -1,7 +1,40 @@
-# iterm2 + shell integration
+
+# iterm2
 brew cask install iterm2
-curl -L https://iterm2.com/shell_integration/zsh \
-  -o ~/.iterm2_shell_integration.zsh
+  # Don’t display the annoying prompt when quitting iTerm
+  defaults write com.googlecode.iterm2 PromptOnQuit -bool false
+  # Install iterm2 zsh shell integration
+  curl -q -L https://iterm2.com/shell_integration/zsh \
+    -o ~/.iterm2_shell_integration.zsh
+  # Install imgcat
+  curl -s -L https://www.iterm2.com/utilities/imgcat \
+    -o ~/.local/bin/imgcat
+  chmod +x ~/.local/bin/imgcat
+  # Install imgls
+  curl -s -L https://www.iterm2.com/utilities/imgls \
+    -o ~/.local/bin/imgls
+  chmod +x ~/.local/bin/imgls
+  # Install divider
+  curl -s -L https://raw.githubusercontent.com/gnachman/iTerm2/master/tests/divider \
+    -o ~/.local/bin/divider
+  chmod +x ~/.local/bin/divider
+
+# zsh
+brew install zsh
+  # Install OhMyZsh
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  # Install OhMyZsh plugins
+  brew install zsh-autosuggestions
+  brew install zsh-navigation-tools
+  brew install zsh-syntax-highlighting
+  brew install zsh-completions
+
+  brew install tree
+  # Fix permissions
+  compaudit |  xargs chmod g-w,o-w
+  # https://unix.stackexchange.com/questions/210930/completions-stopped-working-after-upgrading-zsh/210931#210931
+  rm ~/.zcompdump*
+
 
 # atom
 brew cask install atom
@@ -84,6 +117,3 @@ brew cask install signal
 
 # Install localtunnel
 npm install -g localtunnel
-
-# Install OhMyZsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
