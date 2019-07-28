@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -x
 
+# Set hostname
+sudo scutil --set HostName MBP2019.satori.us
+sudo scutil --set LocalHostName MBP2019.lan
+sudo scutil --set ComputerName MBP2019
+dscacheutil -flushcache
+
 # Set sleep options for battery
 sudo pmset -b displaysleep 1 disksleep 1 sleep 5
 
