@@ -104,7 +104,7 @@ open /Applications/Alfred\ 4.app
 open https://github.com/stuartcryan/custom-iterm-applescripts-for-alfred/blob/master/custom_iterm_script_iterm_3.1.1.applescript
 
 # Install useful commands
-brew install wget ripgrep loc
+brew install wget ripgrep loc watch most
 
 # Install PHP stuff
 brew install php@7.1 composer
@@ -117,3 +117,6 @@ brew cask install signal
 
 # Install localtunnel
 npm install -g localtunnel
+
+# Install spotify
+brew cask install spotify
