@@ -1,4 +1,3 @@
-
 # iterm2
 brew cask install iterm2
   # Don’t display the annoying prompt when quitting iTerm
@@ -35,11 +34,6 @@ brew install zsh
   # https://unix.stackexchange.com/questions/210930/completions-stopped-working-after-upgrading-zsh/210931#210931
   rm ~/.zcompdump*
 
-
-# atom
-brew cask install atom
-open /Applications/Atom.app
-
 # VSCode
 brew cask install visual-studio-code
 open /Applications/Visual\ Studio\ Code.app
@@ -57,10 +51,6 @@ open ~/Documents/licenses/my.onepassword7-license-mac
 brew cask install docker
 open /Applications/Docker.app
 
-# Chrome
-brew cask install google-chrome
-open /Applications/Google\ Chrome.app
-
 # Vagrant
 brew cask install vagrant
 
@@ -69,39 +59,13 @@ brew cask install virtualbox
 
 # MAS - Mac App Store command line interface
 brew install mas
-# Install Things 3
-mas install 904280696
-# Install Marked 2
-mas install 890031187
 
 # Install keybase
 brew cask install keybase
 open /Applications/Keybase.app
 
-# Sync Desktop
-cd /tmp
-git clone keybase://private/neutron37/Desktop
-mv Desktop/.git ~/Desktop
-rsync -av Desktop/ ~/Desktop
-rm -rf /tmp/Desktop
-
-# Sync Documents
-git clone keybase://private/neutron37/Documents
-mv Documents/.git ~/Documents
-rsync -av Documents/ ~/Documents
-rm -rf /tmp/Documents
-
-# Sync home
-git clone keybase://private/neutron37/home
-mv home/.git $HOME/
-rsync home/ $HOME
-rm -rf /tmp/home
-
 # Alfred
 brew cask install alfred
-atom ~/Documents/licenses/alfred.license
-open /Applications/Alfred\ 4.app
-open https://github.com/stuartcryan/custom-iterm-applescripts-for-alfred/blob/master/custom_iterm_script_iterm_3.1.1.applescript
 
 # Install useful commands
 brew install wget ripgrep loc watch most
@@ -120,3 +84,38 @@ npm install -g localtunnel
 
 # Install spotify
 brew cask install spotify
+
+# Install Bitwarden
+brew cask install bitwarden
+
+# Install Brave
+brew cask install brave-browser
+
+# Install Slack
+brew cask install slack
+
+# Install Thunderbird
+brew cask install thunderbird
+
+# Install kubernetes cli and related tools
+brew install kubectx
+brew install kube-ps1
+brew install kubernetes-helm
+brew install kubernetes-krew
+brew install jq
+kubectl krew install oidc-login
+
+# Install openstack cli
+python3 -m pip install python-openstackclient
+
+# Install inconsolata-for-powerline
+brew cask install homebrew/cask-fonts/font-inconsolata-for-powerline
+
+# Install tunnelblick VPN client
+brew cask install tunnelblick
+
+# Install GPG
+brew install gnupg
+
+# Install gitKraken
+brew cask install gitkraken
