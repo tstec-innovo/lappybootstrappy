@@ -100,9 +100,8 @@ brew cask install thunderbird
 # Install kubernetes cli and related tools
 brew install kubectx
 brew install kube-ps1
-brew install kubernetes-helm
-brew install kubernetes-krew
 brew install jq
+brew install kubernetes-krew
 kubectl krew install oidc-login
 
 # Install openstack cli
@@ -117,5 +116,21 @@ brew cask install tunnelblick
 # Install GPG
 brew install gnupg
 
-# Install gitKraken
-brew cask install gitkraken
+# Install openstack tools
+python3 -m pip install python-openstackclient python-heatclient python-designateclient python-octaviaclient
+
+# Vault
+brew install vault
+
+# k9s
+brew install derailed/k9s/k9s
+
+# helm
+# brew install helm@3; brew unlink helm@2; brew link --force helm@3
+brew install helm@2; brew unlink helm@3; brew link --force helm@2
+
+# sealed secrets
+brew install kubeseal
+
+# k8s stern logviewer
+brew install stern
