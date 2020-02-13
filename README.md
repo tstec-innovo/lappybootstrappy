@@ -6,4 +6,4 @@ The project has been restarted with simplicity in mind.
 
 ## Author
 
-[Neutron37](http://neutron37.com), 2019
+[Neutron37](http://neutron37.com), 2020
